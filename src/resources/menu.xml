@@ -13,21 +13,21 @@
         <force>true</force>
         <pause>false</pause>
         <duration>2000</duration>
-        <image>resources/images/menu/title.png</image>
+        <image>resources/images/menu/untitled.png</image>
     </layer>
     <layer id="Credits" next="MainTitle">
         <transition>SCROLL_VERTICAL_NORTH</transition>
         <force>true</force>
         <pause>false</pause>
         <duration>5000</duration>
-        <image>resources/images/menu/credit.png</image>
+        <image>resources/images/menu/untitled.png</image>
     </layer>
     <layer id="MainTitle">
         <transition>SCROLL_HORIZONTAL_WEST_REPEAT</transition>
         <force>false</force>
         <pause>true</pause>
         <duration>10000</duration>
-        <image>resources/images/menu/background.png</image>
+        <image>resources/images/menu/untitled.png</image>
         <optionContainerRatio>0.5</optionContainerRatio>
         <optionBorderThickness>5</optionBorderThickness>
         <title>Checkers</title>
@@ -44,14 +44,14 @@
         <force>false</force>
         <pause>true</pause>
         <duration></duration>
-        <image>resources/images/menu/credit.png</image>
+        <image>resources/images/menu/untitled.png</image>
     </layer>
     <layer id="Options">
         <transition>SCROLL_HORIZONTAL_WEST_REPEAT</transition>
         <force>false</force>
         <pause>true</pause>
         <duration>10000</duration>
-        <image>resources/images/menu/background.png</image>
+        <image>resources/images/menu/untitled.png</image>
         <optionContainerRatio>0.5</optionContainerRatio>
         <optionBorderThickness>5</optionBorderThickness>
         <title>Options</title>
@@ -78,21 +78,14 @@
         <force>false</force>
         <pause>true</pause>
         <duration></duration>
-        <image>resources/images/menu/controls1.png</image>
+        <image>resources/images/menu/untitled.png</image>
     </layer>
-    <layer id="Instructions1" next="Instructions2">
+    <layer id="Instructions1" next="MainTitle">
         <transition>NONE</transition>
         <force>false</force>
         <pause>true</pause>
         <duration></duration>
-        <image>resources/images/menu/instructions1.png</image>
-    </layer>
-    <layer id="Instructions2" next="MainTitle">
-        <transition>NONE</transition>
-        <force>false</force>
-        <pause>true</pause>
-        <duration></duration>
-        <image>resources/images/menu/instructions2.png</image>
+        <image>resources/images/menu/untitled.png</image>
     </layer>
     <layer id="GameStart">
         <!-- THIS LAYER IS INTENTIONALLY LEFT BLANK, THIS IS WHERE MAIN GAMEPLAY WILL START -->
