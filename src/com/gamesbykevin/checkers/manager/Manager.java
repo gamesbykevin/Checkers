@@ -22,6 +22,8 @@ public final class Manager implements IManager
     //where gameplay occurs
     private Rectangle window;
     
+    private Image image;
+    
     /**
      * Constructor for Manager, this is the point where we load any menu option configurations
      * @param engine Engine for our game that contains all objects needed
@@ -29,6 +31,8 @@ public final class Manager implements IManager
      */
     public Manager(final Engine engine) throws Exception
     {
+        this.image = engine.getResources().getGameImage(GameImages.Keys.values()[engine.getRandom().nextInt(GameImages.Keys.values().length)]);
+        
         //set the audio depending on menu setting
         engine.getResources().setAudioEnabled(engine.getMenu().getOptionSelectionIndex(LayerKey.Options, OptionKey.Sound) == CustomMenu.SOUND_ENABLED);
         
@@ -92,6 +96,6 @@ public final class Manager implements IManager
     @Override
     public void render(final Graphics graphics) throws Exception
     {
-        
+        graphics.drawImage(image, 0, 0, null);
     }
 }

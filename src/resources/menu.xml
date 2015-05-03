@@ -57,12 +57,6 @@
         <title>Options</title>
         <backgroundMusicLocation></backgroundMusicLocation>
         <optionSoundLocation>resources/audio/menu/sound/selection.wav</optionSoundLocation>
-        <options name="Difficulty - " id="Difficulty">
-            <option>Medium</option>
-            <option>Hard</option>
-            <option>Very Easy</option>
-            <option>Easy</option>
-        </options>
         <options name="All Sound: " id="Sound">
             <option>On</option>
             <option>Off</option>
