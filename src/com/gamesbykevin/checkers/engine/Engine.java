@@ -42,7 +42,7 @@ public final class Engine implements KeyListener, MouseMotionListener, MouseList
     private final long seed = System.nanoTime();
     
     //the game font size
-    private static final float GAME_FONT_SIZE = 64f;
+    private static final float GAME_FONT_SIZE = 14f;
     
     /**
      * The Engine that contains the game/menu objects
@@ -77,31 +77,31 @@ public final class Engine implements KeyListener, MouseMotionListener, MouseList
     {
         try
         {
-            if (resources != null)
+            if (getResources() != null)
             {
                 resources.dispose();
                 resources = null;
             }
             
-            if (menu != null)
+            if (getMenu() != null)
             {
                 menu.dispose();
                 menu = null;
             }
             
-            if (mouse != null)
+            if (getMouse() != null)
             {
                 mouse.dispose();
                 mouse = null;
             }
             
-            if (keyboard != null)
+            if (getKeyboard() != null)
             {
                 keyboard.dispose();
                 keyboard = null;
             }
             
-            if (manager != null)
+            if (getManager() != null)
             {
                 manager.dispose();
                 manager = null;
@@ -118,7 +118,7 @@ public final class Engine implements KeyListener, MouseMotionListener, MouseList
     @Override
     public void update(Main main) throws Exception
     {
-        if (menu == null)
+        if (getMenu() == null)
         {
             //create new menu
             menu = new CustomMenu(this);
@@ -129,48 +129,61 @@ public final class Engine implements KeyListener, MouseMotionListener, MouseList
         else
         {
             //does the menu have focus
-            if (!menu.hasFocus())
+            if (!getMenu().hasFocus())
             {
                 //reset mouse and keyboard input
                 resetInput();
             }
 
             //update the menu
-            menu.update(this);
+            getMenu().update(this);
 
             //if the menu is finished and the window has focus
-            if (menu.hasFinished() && menu.hasFocus())
+            if (getMenu().hasFinished() && getMenu().hasFocus())
             {
                 //if our resources object is empty create a new one
-                if (resources == null)
+                if (getResources() == null)
                     this.resources = new Resources();
 
                 //check if we are still loading resources
-                if (resources.isLoading())
+                if (getResources().isLoading())
                 {
                     //load resources
-                    resources.update(main.getContainerClass());
+                    getResources().update(main.getContainerClass());
                 }
                 else
                 {
                     //create new manager because at this point our resources have loaded
-                    if (manager == null)
+                    if (getManager() == null)
                     {
-                        manager = new Manager(this);
-                        manager.reset(this);
+                        createManager();
+                        getManager().reset(this);
                     }
 
                     //update main game logic
-                    manager.update(this);
+                    getManager().update(this);
                 }
             }
 
             //if the mouse is released reset all mouse events
-            if (mouse.isMouseReleased())
-                mouse.reset();
+            if (getMouse().isMouseReleased())
+                getMouse().reset();
         }
     }
     
+    /**
+     * Create a new manager object
+     * @throws Exception 
+     */
+    private void createManager() throws Exception
+    {
+        manager = new Manager(this);
+    }
+    
+    /**
+     * Get the seed
+     * @return The seed used in the random generator
+     */
     public long getSeed()
     {
         return this.seed;
@@ -188,10 +201,10 @@ public final class Engine implements KeyListener, MouseMotionListener, MouseList
         resetInput();
         
         //if our resources object exists, stop any existing sound from playing
-        if (this.resources != null)
+        if (getResources() != null)
             this.resources.stopAllSound();
         
-        if (manager != null)
+        if (getManager() != null)
         {
             manager.dispose();
             manager = null;
@@ -208,20 +221,6 @@ public final class Engine implements KeyListener, MouseMotionListener, MouseList
         getKeyboard().reset();
     }
     
-    public Main getMain()
-    {
-        return main;
-    }
-    
-    /**
-     * Get our object used to make random decisions
-     * @return Random
-     */
-    public Random getRandom()
-    {
-        return this.random;
-    }
-    
     /**
      * Draw our game to the Graphics object whether resources are still loading or the game is intact
      * @param graphics
@@ -232,7 +231,7 @@ public final class Engine implements KeyListener, MouseMotionListener, MouseList
     public void render(Graphics graphics) throws Exception
     {
         //get default font
-        if (font == null)
+        if (getFont() == null)
             font = graphics.getFont().deriveFont(Font.BOLD, GAME_FONT_SIZE);
         
         if (getMenu() != null)
@@ -241,23 +240,23 @@ public final class Engine implements KeyListener, MouseMotionListener, MouseList
             if (getMenu().hasFinished() && getMenu().hasFocus())
             {
                 //before we start game we need to load the resources
-                if (resources.isLoading())
+                if (getResources().isLoading())
                 {
                     //set default font
-                    graphics.setFont(font);
+                    graphics.setFont(getFont());
                     
                     //draw loading screen
-                    resources.render(graphics, main.getScreen());
+                    getResources().render(graphics, getMain().getScreen());
                 }
             }
             
             //draw game elements
-            if (manager != null)
+            if (getManager() != null)
             {
                 //set default font
-                graphics.setFont(font);
+                graphics.setFont(getFont());
                 
-                manager.render(graphics);
+                getManager().render(graphics);
             }
             
             //draw menu on top of the game if visible
@@ -281,8 +280,31 @@ public final class Engine implements KeyListener, MouseMotionListener, MouseList
         if (getMenu().hasFinished() && !Shared.HIDE_MOUSE || !getMenu().hasFinished())
         {
             //draw the mouse
-            getMenu().renderMouse(graphics, mouse);
+            getMenu().renderMouse(graphics, getMouse());
         }
+    }
+    
+    public Main getMain()
+    {
+        return main;
+    }
+    
+    /**
+     * Get our object used to make random decisions
+     * @return Random
+     */
+    public Random getRandom()
+    {
+        return this.random;
+    }
+    
+    /**
+     * Get the font
+     * @return The default game font
+     */
+    private Font getFont()
+    {
+        return this.font;
     }
     
     /**
@@ -307,13 +329,15 @@ public final class Engine implements KeyListener, MouseMotionListener, MouseList
     @Override
     public void keyReleased(KeyEvent e)
     {
-        keyboard.addKeyReleased(e.getKeyCode());
+        if (getKeyboard() != null)
+            getKeyboard().addKeyReleased(e.getKeyCode());
     }
     
     @Override
     public void keyPressed(KeyEvent e)
     {
-        keyboard.addKeyPressed(e.getKeyCode());
+        if (getKeyboard() != null)
+            getKeyboard().addKeyPressed(e.getKeyCode());
     }
     
     @Override
@@ -326,43 +350,50 @@ public final class Engine implements KeyListener, MouseMotionListener, MouseList
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        mouse.setMouseClicked(e);
+        if (getMouse() != null)
+            getMouse().setMouseClicked(e);
     }
     
     @Override
     public void mousePressed(MouseEvent e)
     {
-        mouse.setMousePressed(e);
+        if (getMouse() != null)
+            getMouse().setMousePressed(e);
     }
     
     @Override
     public void mouseReleased(MouseEvent e)
     {
-        mouse.setMouseReleased(e);
+        if (getMouse() != null)
+            getMouse().setMouseReleased(e);
     }
     
     @Override
     public void mouseEntered(MouseEvent e)
     {
-        mouse.setMouseEntered(e.getPoint());
+        if (getMouse() != null)
+            getMouse().setMouseEntered(e.getPoint());
     }
     
     @Override
     public void mouseExited(MouseEvent e)
     {
-        mouse.setMouseExited(e.getPoint());
+        if (getMouse() != null)
+            getMouse().setMouseExited(e.getPoint());
     }
     
     @Override
     public void mouseMoved(MouseEvent e)
     {
-        mouse.setMouseMoved(e.getPoint());
+        if (getMouse() != null)
+            getMouse().setMouseMoved(e.getPoint());
     }
     
     @Override
     public void mouseDragged(MouseEvent e)
     {
-        mouse.setMouseDragged(e.getPoint());
+        if (getMouse() != null)
+            getMouse().setMouseDragged(e.getPoint());
     }
     
     public Mouse getMouse()

@@ -34,7 +34,7 @@ public final class CustomMenu extends Menu implements IElement
     public enum OptionKey 
     {
         Sound, FullScreen, 
-        Difficulty, Hint, Mode
+        Board, Piece
     }
     
     /**
@@ -262,7 +262,7 @@ public final class CustomMenu extends Menu implements IElement
         if (screen == null)
             screen = new FullScreen();
 
-        //switch screen
+        //switch screen using the appropriate container
         if (main.getApplet() != null)
         {
             screen.switchFullScreen(main.getApplet());

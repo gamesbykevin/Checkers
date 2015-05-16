@@ -108,12 +108,6 @@ public final class Main extends Thread implements Disposable
             engine = null;
         }
         
-        if (applet != null)
-        {
-            applet.destroy();
-            applet = null;
-        }
-        
         if (panel != null)
         {
             panel.removeAll();
@@ -145,6 +139,9 @@ public final class Main extends Thread implements Disposable
             panel.addMouseMotionListener(engine);
             panel.addMouseListener(engine);
         }
+        
+        //also mark thread active
+        setActive(true);
     }
     
     @Override

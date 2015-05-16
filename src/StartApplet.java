@@ -63,7 +63,18 @@ public final class StartApplet extends JApplet
     @Override
     public void stop()
     {
-        
+        try
+        {
+            //stop thread from being active
+            main.setActive(false);
+            
+            //wait for the thread to finish
+            main.join();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     
     @Override

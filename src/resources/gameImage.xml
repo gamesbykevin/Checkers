@@ -4,19 +4,16 @@
     <image id="Background1">resources/images/game/background1.png</image>
     -->
     
-    <image id="Black2D">resources/images/game/2d/black.png</image>
-    <image id="Blue2D">resources/images/game/2d/blue.png</image>
-    <image id="Green2D">resources/images/game/2d/green.png</image>
-    <image id="Orange2D">resources/images/game/2d/orange.png</image>
-    <image id="Purple2D">resources/images/game/2d/purple.png</image>
-    <image id="Red2D">resources/images/game/2d/red.png</image>
-    <image id="Yellow2D">resources/images/game/2d/yellow.png</image>
+    <image id="BoardGlass">resources/images/game/board/glass.png</image>
+    <image id="BoardMarble">resources/images/game/board/marble.png</image>
+    <image id="BoardPlastic">resources/images/game/board/plastic.png</image>
+    <image id="BoardWood">resources/images/game/board/wood.png</image>
+    <image id="BoardWoodOther">resources/images/game/board/woodOther.png</image>
     
-    <image id="Black3D">resources/images/game/3d/black.png</image>
-    <image id="Blue3D">resources/images/game/3d/blue.png</image>
-    <image id="Green3D">resources/images/game/3d/green.png</image>
-    <image id="Orange3D">resources/images/game/3d/orange.png</image>
-    <image id="Purple3D">resources/images/game/3d/purple.png</image>
-    <image id="Red3D">resources/images/game/3d/red.png</image>
-    <image id="Yellow3D">resources/images/game/3d/yellow.png</image>
+    <image id="PiecesRegular">resources/images/game/pieces/regular.png</image>
+    <image id="PiecesMarble">resources/images/game/pieces/marble.png</image>
+    <image id="PiecesStone">resources/images/game/pieces/stone.png</image>
+    <image id="PiecesIsometric">resources/images/game/pieces/isometric.png</image>
+    
+    <image id="Background">resources/images/game/background.png</image>
 </images>

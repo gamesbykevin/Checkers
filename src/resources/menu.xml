@@ -28,7 +28,7 @@
         <pause>true</pause>
         <duration>10000</duration>
         <image>resources/images/menu/untitled.png</image>
-        <optionContainerRatio>0.5</optionContainerRatio>
+        <optionContainerRatio>0.75</optionContainerRatio>
         <optionBorderThickness>5</optionBorderThickness>
         <title>Checkers</title>
         <backgroundMusicLocation></backgroundMusicLocation>
@@ -52,11 +52,25 @@
         <pause>true</pause>
         <duration>10000</duration>
         <image>resources/images/menu/untitled.png</image>
-        <optionContainerRatio>0.5</optionContainerRatio>
+        <optionContainerRatio>0.75</optionContainerRatio>
         <optionBorderThickness>5</optionBorderThickness>
         <title>Options</title>
         <backgroundMusicLocation></backgroundMusicLocation>
         <optionSoundLocation>resources/audio/menu/sound/selection.wav</optionSoundLocation>
+        <options name="Board: " id="Board">
+            <option>Random</option>
+            <option>Marble</option>
+            <option>Glass</option>
+            <option>Plastic</option>
+            <option>Wood</option>
+            <option>Wood Other</option>
+        </options>
+        <options name="Pieces: " id="Piece">
+            <option>Random</option>
+            <option>Regular</option>
+            <option>Marble</option>
+            <option>Stone</option>
+        </options>
         <options name="All Sound: " id="Sound">
             <option>On</option>
             <option>Off</option>
@@ -90,7 +104,7 @@
         <pause>true</pause>
         <duration></duration>
         <image></image>
-        <optionContainerRatio>0.5</optionContainerRatio>
+        <optionContainerRatio>0.75</optionContainerRatio>
         <optionBorderThickness>5</optionBorderThickness>
         <title>Options</title>
         <backgroundMusicLocation></backgroundMusicLocation>
@@ -116,7 +130,7 @@
         <pause>true</pause>
         <duration></duration>
         <image></image>
-        <optionContainerRatio>0.5</optionContainerRatio>
+        <optionContainerRatio>0.75</optionContainerRatio>
         <optionBorderThickness>5</optionBorderThickness>
         <title>Reset?</title>
         <options name="Yes" next="CreateNewGame" id="CreateNewGame"></options>
@@ -130,7 +144,7 @@
         <pause>true</pause>
         <duration></duration>
         <image></image>
-        <optionContainerRatio>0.5</optionContainerRatio>
+        <optionContainerRatio>0.75</optionContainerRatio>
         <optionBorderThickness>5</optionBorderThickness>
         <title>Leave?</title>
         <options name="Yes" next="ExitGameConfirmed" id="MainTitle"></options>
