@@ -16,10 +16,8 @@ public final class GameImages extends ImageManager
      */
     public enum Keys
     {
-        Black2D, Blue2D, Green2D, Orange2D, Purple2D, Red2D, Yellow2D, 
-        Black3D, Blue3D, Green3D, Orange3D, Purple3D, Red3D, Yellow3D, 
         BoardMarble, BoardGlass, BoardPlastic, BoardWood, BoardWoodOther,
-        PiecesRegular, PiecesMarble, PiecesStone, Isometric, Background
+        PiecesRegular, PiecesMarble, PiecesStone, PiecesIsometric, Background
     }
     
     public GameImages() throws Exception
