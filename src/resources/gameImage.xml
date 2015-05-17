@@ -8,12 +8,12 @@
     <image id="BoardMarble">resources/images/game/board/marble.png</image>
     <image id="BoardPlastic">resources/images/game/board/plastic.png</image>
     <image id="BoardWood">resources/images/game/board/wood.png</image>
-    <image id="BoardWoodOther">resources/images/game/board/woodOther.png</image>
+    <image id="BoardOriginal">resources/images/game/board/original.png</image>
     
     <image id="PiecesRegular">resources/images/game/pieces/regular.png</image>
     <image id="PiecesMarble">resources/images/game/pieces/marble.png</image>
     <image id="PiecesStone">resources/images/game/pieces/stone.png</image>
-    <image id="PiecesIsometric">resources/images/game/pieces/isometric.png</image>
+    <image id="PiecesOriginal">resources/images/game/pieces/original.png</image>
     
     <image id="Background">resources/images/game/background.png</image>
 </images>

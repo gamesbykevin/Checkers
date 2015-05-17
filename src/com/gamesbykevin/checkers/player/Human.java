@@ -7,6 +7,7 @@ package com.gamesbykevin.checkers.player;
 import com.gamesbykevin.checkers.board.Board;
 import com.gamesbykevin.checkers.engine.Engine;
 import com.gamesbykevin.checkers.piece.Checker;
+import com.gamesbykevin.checkers.shared.Shared;
 
 /**
  * This will handle the human interaction with the player
@@ -14,9 +15,9 @@ import com.gamesbykevin.checkers.piece.Checker;
  */
 public final class Human extends Player
 {
-    public Human(final boolean attackNorth)
+    public Human(final boolean attackNorth, final Players.PieceKey pieceRegular, final Players.PieceKey pieceKing)
     {
-        super(attackNorth);
+        super(attackNorth, pieceRegular, pieceKing);
     }
     
     @Override
@@ -29,6 +30,14 @@ public final class Human extends Player
         final int x = engine.getMouse().getLocation().x;
         final int y = engine.getMouse().getLocation().y;
             
+        if (Shared.DEBUG)
+        {
+            final int newCol = engine.getManager().getBoard().getColumn(x, y);
+            final int newRow = engine.getManager().getBoard().getRow(x, y);
+
+            System.out.println("x=" + x + ", y=" + y + " col=" + newCol + " row=" + newRow);
+        }
+        
         //does the player have a piece selected
         if (hasSelection())
         {
@@ -47,8 +56,8 @@ public final class Human extends Player
                 final Board board = engine.getManager().getBoard();
                 
                 //get the column, row where we want to place
-                final int newCol = board.getColumn(x);
-                final int newRow = board.getRow(y);
+                final int newCol = board.getColumn(x, y);
+                final int newRow = board.getRow(x, y);
                 
                 //make sure the location is on the playable board
                 if (!Board.hasBounds(newCol, newRow))

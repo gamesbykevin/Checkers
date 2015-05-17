@@ -1,5 +1,6 @@
 package com.gamesbykevin.checkers.manager;
 
+import com.gamesbykevin.checkers.background.Background;
 import com.gamesbykevin.framework.util.Timers;
 import com.gamesbykevin.checkers.board.*;
 import com.gamesbykevin.checkers.engine.Engine;
@@ -8,6 +9,7 @@ import com.gamesbykevin.checkers.menu.CustomMenu.*;
 import com.gamesbykevin.checkers.player.Players;
 import com.gamesbykevin.checkers.resources.GameAudio;
 import com.gamesbykevin.checkers.resources.GameImages;
+import com.gamesbykevin.checkers.shared.Shared;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -25,8 +27,8 @@ public final class Manager implements IManager
     private Rectangle window;
     
     //the location where the board is to be drawn
-    private static final int BOARD_START_X = 32;
-    private static final int BOARD_START_Y = 32;
+    private static final int BOARD_START_X = -Board.CELL_DIMENSIONS;
+    private static final int BOARD_START_Y = Board.CELL_DIMENSIONS;
     
     //the game board
     private Board board;
@@ -56,57 +58,72 @@ public final class Manager implements IManager
         //create list of optional boards
         List<GameImages.Keys> options = new ArrayList<>();
 
-        if (board == null)
+        //reset options list
+        options.clear();
+
+        //get the board selection
+        final int boardSelection = engine.getMenu().getOptionSelectionIndex(LayerKey.Options, OptionKey.Board);
+
+        //first selection is random
+        if (boardSelection == 0)
         {
-            //reset options list
-            options.clear();
-            
-            //get the board selection
-            final int boardSelection = engine.getMenu().getOptionSelectionIndex(LayerKey.Options, OptionKey.Board);
-            
-            //first selection is random
-            if (boardSelection == 0)
-            {
-                options.add(GameImages.Keys.BoardGlass);
-                options.add(GameImages.Keys.BoardMarble);
-                options.add(GameImages.Keys.BoardPlastic);
-                options.add(GameImages.Keys.BoardWood);
-                options.add(GameImages.Keys.BoardWoodOther);
-            }
-            else if (boardSelection == 1)
-            {
-                options.add(GameImages.Keys.BoardMarble);
-            }
-            else if (boardSelection == 2)
-            {
-                options.add(GameImages.Keys.BoardGlass);
-            }
-            else if (boardSelection == 3)
-            {
-                options.add(GameImages.Keys.BoardPlastic);
-            }
-            else if (boardSelection == 4)
-            {
-                options.add(GameImages.Keys.BoardWood);
-            }
-            else if (boardSelection == 5)
-            {
-                options.add(GameImages.Keys.BoardWoodOther);
-            }
-            
-            //pick random choice
-            final int index = engine.getRandom().nextInt(options.size());
-            
-            //create new board and assign board image
-            board = new Board(engine.getResources().getGameImage(options.get(index)));
+            options.add(GameImages.Keys.BoardGlass);
+            options.add(GameImages.Keys.BoardMarble);
+            options.add(GameImages.Keys.BoardPlastic);
+            options.add(GameImages.Keys.BoardWood);
+            options.add(GameImages.Keys.BoardOriginal);
         }
+        else if (boardSelection == 1)
+        {
+            options.add(GameImages.Keys.BoardMarble);
+        }
+        else if (boardSelection == 2)
+        {
+            options.add(GameImages.Keys.BoardGlass);
+        }
+        else if (boardSelection == 3)
+        {
+            options.add(GameImages.Keys.BoardPlastic);
+        }
+        else if (boardSelection == 4)
+        {
+            options.add(GameImages.Keys.BoardWood);
+        }
+        else
+        {
+            options.add(GameImages.Keys.BoardOriginal);
+        }
+
+        //pick random choice
+        int index = engine.getRandom().nextInt(options.size());
+
+        //are we rendering isometric?
+        final boolean isometric = (engine.getMenu().getOptionSelectionIndex(LayerKey.Options, OptionKey.Render) != 0);
         
-        //render a new image for the board
-        board.renderImage();
+        if (isometric)
+        {
+            //create the board
+            board = new BoardIsometric(options.get(index));
         
-        //set the location of the board
-        board.setX(BOARD_START_X);
-        board.setY(BOARD_START_Y);
+            //render a new image for the board
+            board.renderImage();
+            
+            //set the location of the board, now that the piece have been placed
+            board.setX(BOARD_START_X);
+            board.setY(BOARD_START_Y);
+        }
+        else
+        {
+            //create new board and assign board image
+            board = new Board2d(engine.getResources().getGameImage(options.get(index)));
+            
+            //render a new image for the board
+            board.renderImage();
+            
+            //set the location of the board, now that the piece have been placed
+            board.setX((Shared.ORIGINAL_WIDTH / 2) - (board.getWidth() / 2));
+            board.setY((Shared.ORIGINAL_HEIGHT / 2) - (board.getHeight() / 2));
+        }
         
         if (players == null)
         {
@@ -122,6 +139,7 @@ public final class Manager implements IManager
                 options.add(GameImages.Keys.PiecesRegular);
                 options.add(GameImages.Keys.PiecesMarble);
                 options.add(GameImages.Keys.PiecesStone);
+                options.add(GameImages.Keys.PiecesOriginal);
             }
             else if (pieceSelection == 1)
             {
@@ -135,12 +153,16 @@ public final class Manager implements IManager
             {
                 options.add(GameImages.Keys.PiecesStone);
             }
+            else
+            {
+                options.add(GameImages.Keys.PiecesOriginal);
+            }
             
             //pick random choice
-            final int index = engine.getRandom().nextInt(options.size());
+            index = engine.getRandom().nextInt(options.size());
             
             //create the players and assign the pieces image
-            players = new Players(engine.getResources().getGameImage(options.get(index)));
+            players = new Players(engine.getResources().getGameImage(options.get(index)), engine.getRandom().nextBoolean());
         }
         
         //reset the player's pieces
@@ -232,8 +254,8 @@ public final class Manager implements IManager
         //draw the scrolling background
         background.render(graphics);
         
-        //draw the entire custom image representing the board
-        board.draw(graphics);
+        //draw the entire custom image representing the game board
+        board.render(graphics);
         
         //draw the player's pieces
         players.render(graphics);

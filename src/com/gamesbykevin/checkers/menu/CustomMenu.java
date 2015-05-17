@@ -34,7 +34,7 @@ public final class CustomMenu extends Menu implements IElement
     public enum OptionKey 
     {
         Sound, FullScreen, 
-        Board, Piece
+        Board, Piece, Render
     }
     
     /**

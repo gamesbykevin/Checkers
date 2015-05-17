@@ -25,8 +25,10 @@ public final class Players extends Sprite implements IElement
     public enum PieceKey
     {
         RegularPlayer1(2,1),
+        RegularPlayer1Other(1,1),
         RegularPlayer2(0,1),
         KingPlayer1(2,0),
+        KingPlayer1Other(1,0),
         KingPlayer2(0,0);
         
         private final int col, row;
@@ -38,7 +40,7 @@ public final class Players extends Sprite implements IElement
         }
     }
     
-    public Players(final Image image) throws Exception
+    public Players(final Image image, final boolean random) throws Exception
     {
         //assign image
         super.setImage(image);
@@ -46,11 +48,20 @@ public final class Players extends Sprite implements IElement
         //create spritesheet
         super.createSpriteSheet();
         
-        //player 1 will attack north
-        this.human = new Human(true);
+        //player 1 can have a different colored set of checkers
+        if (random)
+        {
+            //player 1 will attack north
+            this.human = new Human(true, PieceKey.RegularPlayer1, PieceKey.KingPlayer1);
+        }
+        else
+        {
+            //player 1 will attack north
+            this.human = new Human(true, PieceKey.RegularPlayer1Other, PieceKey.KingPlayer1Other);
+        }
         
         //player 2 will attack south
-        this.cpu = new Human(false);
+        this.cpu = new Human(false, PieceKey.RegularPlayer2, PieceKey.KingPlayer2);
         
         //add the animation for each piece
         for (PieceKey key : PieceKey.values())
@@ -74,7 +85,7 @@ public final class Players extends Sprite implements IElement
     }
     
     /**
-     * Get the opponent
+     * Get the opponent the specified player is facing.
      * @param Player The current player (not the opponent)
      * @return The player we are playing against, either the human or cpu player
      */
@@ -98,22 +109,14 @@ public final class Players extends Sprite implements IElement
     {
         for (int index = 0; index < this.getHuman().getPieces().size(); index++)
         {
-            //get the current checker
-            Checker piece = this.getHuman().getPiece(index);
-            
-            //assign the coordinates
-            piece.setX(board.getCoordinateX(piece));
-            piece.setY(board.getCoordinateY(piece));
+            //assign the appropriate (x,y) coordinates for the checker
+            board.placePiece(getHuman().getPiece(index));
         }
         
         for (int index = 0; index < this.getCpu().getPieces().size(); index++)
         {
-            //get the current checker
-            Checker piece = this.getCpu().getPiece(index);
-            
-            //assign the coordinates
-            piece.setX(board.getCoordinateX(piece));
-            piece.setY(board.getCoordinateY(piece));
+            //assign the appropriate (x,y) coordinates for the checker
+            board.placePiece(getCpu().getPiece(index));
         }
     }
     
@@ -231,13 +234,13 @@ public final class Players extends Sprite implements IElement
         //render the players depending on the current turn
         if (!player1turn)
         {
-            renderPlayer(graphics, getHuman(), PieceKey.KingPlayer1, PieceKey.RegularPlayer1);
-            renderPlayer(graphics, getCpu(), PieceKey.KingPlayer2, PieceKey.RegularPlayer2);
+            renderPlayer(graphics, getHuman());
+            renderPlayer(graphics, getCpu());
         }
         else
         {
-            renderPlayer(graphics, getCpu(), PieceKey.KingPlayer2, PieceKey.RegularPlayer2);
-            renderPlayer(graphics, getHuman(), PieceKey.KingPlayer1, PieceKey.RegularPlayer1);
+            renderPlayer(graphics, getCpu());
+            renderPlayer(graphics, getHuman());
         }
     }
     
@@ -245,11 +248,9 @@ public final class Players extends Sprite implements IElement
      * Render the player's checkers
      * @param graphics Object used to draw graphics
      * @param player The player who's checkers we want to draw
-     * @param king Animation key for a king checker
-     * @param regular Animation key for a regular checker
      * @throws Exception 
      */
-    private void renderPlayer(final Graphics graphics, final Player player, final PieceKey king, final PieceKey regular) throws Exception
+    private void renderPlayer(final Graphics graphics, final Player player) throws Exception
     {
         for (int index = 0; index < player.getPieces().size(); index++)
         {
@@ -260,7 +261,7 @@ public final class Players extends Sprite implements IElement
             super.setLocation(piece.getX(), piece.getY());
             
             //assign the appropriate animation
-            super.getSpriteSheet().setCurrent((piece.isKing()) ? king : regular);
+            super.getSpriteSheet().setCurrent((piece.isKing()) ? player.getKeyKing() : player.getKeyRegular());
             
             //draw the piece
             super.draw(graphics);

@@ -63,13 +63,18 @@
             <option>Glass</option>
             <option>Plastic</option>
             <option>Wood</option>
-            <option>Wood Other</option>
+            <option>Original</option>
         </options>
         <options name="Pieces: " id="Piece">
             <option>Random</option>
             <option>Regular</option>
             <option>Marble</option>
             <option>Stone</option>
+            <option>Original</option>
+        </options>
+        <options name="Render: " id="Render">
+            <option>2d</option>
+            <option>3d</option>
         </options>
         <options name="All Sound: " id="Sound">
             <option>On</option>

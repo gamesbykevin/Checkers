@@ -1,4 +1,4 @@
-package com.gamesbykevin.checkers.board;
+package com.gamesbykevin.checkers.background;
 
 import com.gamesbykevin.framework.base.Sprite;
 import com.gamesbykevin.framework.util.Timer;

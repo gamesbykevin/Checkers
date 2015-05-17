@@ -16,8 +16,8 @@ public final class GameImages extends ImageManager
      */
     public enum Keys
     {
-        BoardMarble, BoardGlass, BoardPlastic, BoardWood, BoardWoodOther,
-        PiecesRegular, PiecesMarble, PiecesStone, PiecesIsometric, Background
+        BoardMarble, BoardGlass, BoardPlastic, BoardWood, BoardOriginal, 
+        PiecesRegular, PiecesMarble, PiecesStone, PiecesOriginal, Background
     }
     
     public GameImages() throws Exception

@@ -5,6 +5,7 @@ import com.gamesbykevin.framework.resources.Disposable;
 
 import com.gamesbykevin.checkers.engine.Engine;
 import com.gamesbykevin.checkers.piece.Checker;
+import com.gamesbykevin.checkers.player.Players.PieceKey;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -38,13 +39,38 @@ public abstract class Player implements Disposable
     //the selected piece
     private int selection = NO_SELECTION;
     
-    protected Player(final boolean north)
+    //the animations to user for the players checkers
+    private final PieceKey pieceKeyRegular, pieceKeyKing;
+    
+    protected Player(final boolean north, final PieceKey pieceKeyRegular, final PieceKey pieceKeyKing)
     {
         //assign the direction we are attacking
         this.north = north;
         
         //create a new list to hold the checker pieces
         this.pieces = new ArrayList<>();
+        
+        //assign the animations
+        this.pieceKeyRegular = pieceKeyRegular;
+        this.pieceKeyKing = pieceKeyKing;
+    }
+    
+    /**
+     * Get the piece key for the regular checker animation
+     * @return The animation key for regular checkers
+     */
+    public PieceKey getKeyRegular()
+    {
+        return this.pieceKeyRegular;
+    }
+    
+    /**
+     * Get the piece key for the king checker animation
+     * @return The animation key for king checkers
+     */
+    public PieceKey getKeyKing()
+    {
+        return this.pieceKeyKing;
     }
     
     /**
@@ -224,10 +250,9 @@ public abstract class Player implements Disposable
             }
         }
         
-        //reset coordinates
-        piece.setX(board.getCoordinateX(piece));
-        piece.setY(board.getCoordinateY(piece));
-                        
+        //set the appropriate coordinates
+        board.placePiece(piece);
+        
         //reset selection
         setSelection(NO_SELECTION);
     }
