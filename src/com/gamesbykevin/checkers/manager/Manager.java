@@ -6,8 +6,10 @@ import com.gamesbykevin.checkers.board.*;
 import com.gamesbykevin.checkers.engine.Engine;
 import com.gamesbykevin.checkers.menu.CustomMenu;
 import com.gamesbykevin.checkers.menu.CustomMenu.*;
+import com.gamesbykevin.checkers.message.Message;
 import com.gamesbykevin.checkers.player.Players;
 import com.gamesbykevin.checkers.resources.GameAudio;
+import com.gamesbykevin.checkers.resources.GameFont;
 import com.gamesbykevin.checkers.resources.GameImages;
 import com.gamesbykevin.checkers.shared.Shared;
 
@@ -25,7 +27,7 @@ public final class Manager implements IManager
 {
     //the location where the board is to be drawn
     private static final int BOARD_START_X = -Board.CELL_DIMENSIONS;
-    private static final int BOARD_START_Y = Board.CELL_DIMENSIONS;
+    private static final int BOARD_START_Y = Board.CELL_DIMENSIONS / 2;
     
     //the game board
     private Board board;
@@ -35,6 +37,9 @@ public final class Manager implements IManager
     
     //the scrolling background
     private Background background;
+    
+    //the custom message to display
+    private Message message;
     
     /**
      * Constructor for Manager, this is the point where we load any menu option configurations
@@ -87,6 +92,15 @@ public final class Manager implements IManager
                 options.add(GameImages.Keys.BoardOriginal);
                 break;
         }
+        
+        //if the message does not exist
+        if (message == null)
+        {
+            message = new Message(engine.getResources().getGameImage(GameImages.Keys.MessageBackground));
+            message.setFont(engine.getResources().getGameFont(GameFont.Keys.Default).deriveFont(16f));
+            message.setDescription1(Message.MESSAGE_PLAYER_1_TURN);
+            message.setDescription2(Message.MESSAGE_BEGIN);
+        }
 
         //pick random choice
         int index = engine.getRandom().nextInt(options.size());
@@ -115,14 +129,17 @@ public final class Manager implements IManager
         if (isometric)
         {
             //create the board
-            board = new BoardIsometric(options.get(index));
+            board = new Board3d(options.get(index));
         
             //render a new image for the board
-            board.renderImage();
+            board.render();
             
             //set the location of the board, now that the piece have been placed
             board.setX(BOARD_START_X);
             board.setY(BOARD_START_Y);
+            
+            //place message window depending on board render
+            message.setLocation(Message.LOCATION_X_3D, Message.LOCATION_Y_3D);
         }
         else
         {
@@ -130,13 +147,17 @@ public final class Manager implements IManager
             board = new Board2d(engine.getResources().getGameImage(options.get(index)));
             
             //render a new image for the board
-            board.renderImage();
+            board.render();
             
             //set the location of the board, now that the piece have been placed
             board.setX((Shared.ORIGINAL_WIDTH / 2) - (board.getWidth() / 2));
-            board.setY((Shared.ORIGINAL_HEIGHT / 2) - (board.getHeight() / 2));
+            board.setY((Shared.ORIGINAL_HEIGHT / 2) - (board.getHeight() / 2) - (Board.CELL_DIMENSIONS * 2));
+            
+            //place message window depending on board render
+            message.setLocation(Message.LOCATION_X_2D, Message.LOCATION_Y_2D);
         }
         
+        //if the players object does not exist
         if (players == null)
         {
             //reset options list
@@ -179,10 +200,7 @@ public final class Manager implements IManager
         }
         
         //reset the player's pieces
-        players.reset();
-        
-        //assign the x,y coordinates of the pieces
-        players.assignCoordinates(board);
+        players.reset(board);
         
         if (background == null)
         {
@@ -202,6 +220,11 @@ public final class Manager implements IManager
             //assign background image
             background = new Background(engine.getResources().getGameImage(options.get(index)));
         }
+    }
+    
+    public Message getMessage()
+    {
+        return this.message;
     }
     
     public Players getPlayers()
@@ -236,6 +259,12 @@ public final class Manager implements IManager
         {
             background.dispose();
             background = null;
+        }
+        
+        if (message != null)
+        {
+            message.dispose();
+            message = null;
         }
         
         try
@@ -276,6 +305,9 @@ public final class Manager implements IManager
         
         //draw the entire custom image representing the game board
         board.render(graphics);
+        
+        //draw the custom message
+        message.render(graphics);
         
         //draw the player's pieces
         players.render(graphics);

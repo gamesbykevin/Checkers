@@ -19,6 +19,7 @@ public final class GameImages extends ImageManager
         BoardMarble, BoardGlass, BoardPlastic, BoardWood, BoardOriginal, 
         PiecesRegular, PiecesMarble, PiecesStone, PiecesOriginal, 
         Background1, Background2, Background3, Background4, Background5, 
+        MessageBackground
     }
     
     public GameImages() throws Exception

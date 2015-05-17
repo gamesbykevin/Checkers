@@ -10,7 +10,7 @@ import java.awt.Polygon;
  * This class will create an isometric board
  * @author GOD
  */
-public final class BoardIsometric extends Board
+public final class Board3d extends Board
 {
     //our temporary polygon for rendering and testing collision
     private Polygon p = new Polygon();
@@ -33,7 +33,7 @@ public final class BoardIsometric extends Board
     //the alternating colors for the board
     private Color light, dark;
     
-    public BoardIsometric(GameImages.Keys key)
+    public Board3d(GameImages.Keys key)
     {
         super((BOARD_COLUMNS) * CELL_DIMENSIONS, (BOARD_ROWS) * CELL_DIMENSIONS);
         
@@ -235,7 +235,7 @@ public final class BoardIsometric extends Board
     }
     
     @Override
-    public void renderImage() throws Exception
+    public void render() throws Exception
     {
         //clear the existing image
         super.clear();

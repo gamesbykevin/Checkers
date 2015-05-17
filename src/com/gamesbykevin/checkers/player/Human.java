@@ -6,8 +6,8 @@ package com.gamesbykevin.checkers.player;
 
 import com.gamesbykevin.checkers.board.Board;
 import com.gamesbykevin.checkers.engine.Engine;
+import com.gamesbykevin.checkers.message.Message;
 import com.gamesbykevin.checkers.piece.Checker;
-import com.gamesbykevin.checkers.shared.Shared;
 
 /**
  * This will handle the human interaction with the player
@@ -53,7 +53,13 @@ public final class Human extends Player
                 
                 //make sure the location is on the playable board
                 if (!Board.hasBounds(newCol, newRow))
+                {
+                    //prompt user of invalid move
+                    engine.getManager().getMessage().setDescription2(Message.MESSAGE_INVALID_MOVE);
+                    
+                    //return false, move has not completed
                     return false;
+                }
                 
                 //do we already have a piece at this location
                 if (hasPiece(newCol, newRow))
@@ -63,6 +69,11 @@ public final class Human extends Player
                     {
                         //reset selection
                         placeSelection(board, newCol, newRow);
+                    }
+                    else
+                    {
+                        //display to user that there is already a piece here
+                        engine.getManager().getMessage().setDescription2(Message.MESSAGE_PIECE_EXISTS);
                     }
                 }
                 else
@@ -78,7 +89,13 @@ public final class Human extends Player
                     {
                         //if we are moving in a direction we are not assigned
                         if (assignedNorth() && !north || !assignedNorth() && north)
+                        {
+                            //not the correct direction
                             correctDirection = false;
+                            
+                            //prompt user, that they made an invalid move
+                            engine.getManager().getMessage().setDescription2(Message.MESSAGE_INVALID_MOVE);
+                        }
                     }
                     else
                     {
@@ -113,6 +130,11 @@ public final class Human extends Player
                                     //a valid move has been made
                                     valid = true;
                                 }
+                                else
+                                {
+                                    //prompt user, they must capture the opponent
+                                    engine.getManager().getMessage().setDescription2(Message.MESSAGE_JUMP_REQUIRED);
+                                }
                             }
                             else if (colDiff == Player.MOVE_CAPTURE && rowDiff == Player.MOVE_CAPTURE)
                             {
@@ -141,13 +163,19 @@ public final class Human extends Player
                                     else
                                     {
                                         //the piece still can capture, so we will keep the same selection
-                                        setSelection(selection);
+                                        //setSelection(selection);
+                                        
+                                        //display to user they have to complete the capture
+                                        engine.getManager().getMessage().setDescription2(Message.MESSAGE_COMPLETE_JUMP);
                                     }
                                 }
                                 else
                                 {
                                     //not a valid jump
                                     valid = false;
+                                    
+                                    //display to user invalid move
+                                    engine.getManager().getMessage().setDescription2(Message.MESSAGE_INVALID_MOVE);
                                 }
                             }
                         }
@@ -155,6 +183,9 @@ public final class Human extends Player
                         {
                             //can't place a piece where the enemy is
                             valid = false;
+                            
+                            //display to user that there is already a piece here
+                            engine.getManager().getMessage().setDescription2(Message.MESSAGE_PIECE_EXISTS);
                         }
                     }
                 }

@@ -130,7 +130,7 @@ public final class Board2d extends Board
     }
     
     @Override
-    public void renderImage() throws Exception
+    public void render() throws Exception
     {
         //clear the existing image
         super.clear();

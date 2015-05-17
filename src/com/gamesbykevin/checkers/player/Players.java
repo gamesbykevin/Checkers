@@ -4,9 +4,11 @@ import com.gamesbykevin.framework.base.Sprite;
 
 import com.gamesbykevin.checkers.board.Board;
 import com.gamesbykevin.checkers.engine.Engine;
+import com.gamesbykevin.checkers.message.Message;
 import com.gamesbykevin.checkers.piece.Checker;
 import com.gamesbykevin.checkers.shared.IElement;
 
+import java.awt.event.KeyEvent;
 import java.awt.Graphics;
 import java.awt.Image;
 
@@ -17,10 +19,18 @@ import java.awt.Image;
 public final class Players extends Sprite implements IElement
 {
     //the players in the game
-    private Player human, cpu;
+    private Player player1, player2;
     
     //player 1 will go first
     private boolean player1turn = true;
+    
+    //has the game ended
+    private boolean gameover = false;
+    
+    /**
+     * The button to hit for reset
+     */
+    private static final int KEY_RESET = KeyEvent.VK_R;
     
     public enum PieceKey
     {
@@ -52,16 +62,16 @@ public final class Players extends Sprite implements IElement
         if (random)
         {
             //player 1 will attack north
-            this.human = new Human(true, PieceKey.RegularPlayer1, PieceKey.KingPlayer1);
+            this.player1 = new Human(true, PieceKey.RegularPlayer1, PieceKey.KingPlayer1);
         }
         else
         {
             //player 1 will attack north
-            this.human = new Human(true, PieceKey.RegularPlayer1Other, PieceKey.KingPlayer1Other);
+            this.player1 = new Human(true, PieceKey.RegularPlayer1Other, PieceKey.KingPlayer1Other);
         }
         
         //player 2 will attack south
-        this.cpu = new Human(false, PieceKey.RegularPlayer2, PieceKey.KingPlayer2);
+        this.player2 = new Human(false, PieceKey.RegularPlayer2, PieceKey.KingPlayer2);
         
         //add the animation for each piece
         for (PieceKey key : PieceKey.values())
@@ -70,18 +80,32 @@ public final class Players extends Sprite implements IElement
         }
         
         //make sure players aren't attacking in the same direction
-        if (getHuman().assignedNorth() && getCpu().assignedNorth() || !getHuman().assignedNorth() && !getCpu().assignedNorth())
+        if (getPlayer1().assignedNorth() && getPlayer2().assignedNorth() || !getPlayer1().assignedNorth() && !getPlayer2().assignedNorth())
             throw new Exception("Both players can't be attacking in the same direction.");
     }
     
-    private Player getHuman()
+    /**
+     * Has the game ended one way or the other?<br>
+     * @param gameover true=yes, false=no
+     */
+    public void setGameover(final boolean gameover)
     {
-        return this.human;
+        this.gameover = gameover;
     }
     
-    private Player getCpu()
+    public boolean isGameover()
     {
-        return this.cpu;
+        return this.gameover;
+    }
+    
+    private Player getPlayer1()
+    {
+        return this.player1;
+    }
+    
+    private Player getPlayer2()
+    {
+        return this.player2;
     }
     
     /**
@@ -91,43 +115,32 @@ public final class Players extends Sprite implements IElement
      */
     public Player getOpponent(final Player player)
     {
-        if (player.id != getHuman().id)
+        if (player.id != getPlayer1().id)
         {
-            return getHuman();
+            return getPlayer1();
         }
         else
         {
-            return getCpu();
+            return getPlayer2();
         }
     }
     
     /**
-     * Make sure the player's pieces are in the correct location
-     * @param board The board where the pieces are placed
+     * Clear all existing pieces and assign the default.
+     * @param board Board object needed to assign the correct x,y coordinates
+     * @throws Exception 
      */
-    public void assignCoordinates(final Board board) throws Exception
-    {
-        for (int index = 0; index < this.getHuman().getPieces().size(); index++)
-        {
-            //assign the appropriate (x,y) coordinates for the checker
-            board.placePiece(getHuman().getPiece(index));
-        }
-        
-        for (int index = 0; index < this.getCpu().getPieces().size(); index++)
-        {
-            //assign the appropriate (x,y) coordinates for the checker
-            board.placePiece(getCpu().getPiece(index));
-        }
-    }
-    
-    /**
-     * Clear the players pieces and assign the default
-     */
-    public final void reset() throws Exception
+    public final void reset(final Board board) throws Exception
     {
         //remove the players pieces
-        this.getHuman().getPieces().clear();
-        this.getCpu().getPieces().clear();
+        this.getPlayer1().getPieces().clear();
+        this.getPlayer2().getPieces().clear();
+        
+        //player 1 goes first
+        setPlayer1Turn(true);
+        
+        //the game is not over
+        setGameover(false);
         
         //setup the pieces for the player
         for (int row = 0; row < Board.ROWS; row++)
@@ -140,12 +153,12 @@ public final class Players extends Sprite implements IElement
                     if (row % 2 == 0)
                     {
                         if (col % 2 != 0)
-                            getCpu().add(col, row);
+                            getPlayer2().add(col, row);
                     }
                     else
                     {
                         if (col % 2 == 0)
-                            getCpu().add(col, row);
+                            getPlayer2().add(col, row);
                     }
                 }
                 else if (row >= Board.COLUMNS - 3)
@@ -153,31 +166,45 @@ public final class Players extends Sprite implements IElement
                     if (row % 2 == 0)
                     {
                         if (col % 2 != 0)
-                            getHuman().add(col, row);
+                            getPlayer1().add(col, row);
                     }
                     else
                     {
                         if (col % 2 == 0)
-                            getHuman().add(col, row);
+                            getPlayer1().add(col, row);
                     }
                 }
             }
+        }
+        
+        //now assign the appropriate coordinates for player
+        for (int index = 0; index < this.getPlayer1().getPieces().size(); index++)
+        {
+            //assign the appropriate (x,y) coordinates for the checker
+            board.placePiece(getPlayer1().getPiece(index));
+        }
+        
+        //now assign the appropriate coordinates for player
+        for (int index = 0; index < this.getPlayer2().getPieces().size(); index++)
+        {
+            //assign the appropriate (x,y) coordinates for the checker
+            board.placePiece(getPlayer2().getPiece(index));
         }
     }
     
     @Override
     public void dispose()
     {
-        if (human != null)
+        if (player1 != null)
         {
-            human.dispose();
-            human = null;
+            player1.dispose();
+            player1 = null;
         }
         
-        if (cpu != null)
+        if (player2 != null)
         {
-            cpu.dispose();
-            cpu = null;
+            player2.dispose();
+            player2 = null;
         }
     }
     
@@ -194,29 +221,81 @@ public final class Players extends Sprite implements IElement
     @Override
     public void update(final Engine engine) throws Exception
     {
+        //if game has ended
+        if (isGameover())
+        {
+            //check if user hit reset button
+            if (engine.getKeyboard().isKeyReleased())
+            {
+                //if the reset key was released, reset game
+                if (engine.getKeyboard().hasKeyReleased(KEY_RESET))
+                {
+                    //reset player's pieces
+                    reset(engine.getManager().getBoard());
+                    
+                    //also reset status message
+                    engine.getManager().getMessage().setDescription1(Message.MESSAGE_PLAYER_1_TURN);
+                    engine.getManager().getMessage().setDescription2(Message.MESSAGE_BEGIN);
+                }
+            }
+            
+            //no need to continue
+            return;
+        }
+        
         //has the current player completed their turn
         boolean result;
         
         if (isPlayer1Turn())
         {
-            result = getHuman().update(engine);
+            result = getPlayer1().update(engine);
             
             //if the player finished switch turns
             if (result)
             {
                 //switch turns
                 setPlayer1Turn(!isPlayer1Turn());
+                
+                //set message
+                engine.getManager().getMessage().setDescription1(Message.MESSAGE_PLAYER_2_TURN);
+                engine.getManager().getMessage().setDescription2(Message.MESSAGE_NONE);
             }
         }
         else
         {
-            result = getCpu().update(engine);
+            result = getPlayer2().update(engine);
             
             //if the player finished switch turns
             if (result)
             {
                 //switch turns
                 setPlayer1Turn(!isPlayer1Turn());
+                
+                //set message
+                engine.getManager().getMessage().setDescription1(Message.MESSAGE_PLAYER_1_TURN);
+                engine.getManager().getMessage().setDescription2(Message.MESSAGE_NONE);
+            }
+        }
+        
+        if (!isGameover())
+        {
+            if (getPlayer1().isTrapped(getPlayer2()))
+            {
+                //flag game over
+                setGameover(true);
+                
+                //set message
+                engine.getManager().getMessage().setDescription1(Message.MESSAGE_PLAYER_2_WINS);
+                engine.getManager().getMessage().setDescription2(Message.MESSAGE_RESET);
+            }
+            else if (getPlayer2().isTrapped(getPlayer1()))
+            {
+                //flag game over
+                setGameover(true);
+                
+                //set message
+                engine.getManager().getMessage().setDescription1(Message.MESSAGE_PLAYER_1_WINS);
+                engine.getManager().getMessage().setDescription2(Message.MESSAGE_RESET);
             }
         }
         
@@ -234,13 +313,13 @@ public final class Players extends Sprite implements IElement
         //render the players depending on the current turn
         if (!player1turn)
         {
-            renderPlayer(graphics, getHuman());
-            renderPlayer(graphics, getCpu());
+            renderPlayer(graphics, getPlayer1());
+            renderPlayer(graphics, getPlayer2());
         }
         else
         {
-            renderPlayer(graphics, getCpu());
-            renderPlayer(graphics, getHuman());
+            renderPlayer(graphics, getPlayer2());
+            renderPlayer(graphics, getPlayer1());
         }
     }
     

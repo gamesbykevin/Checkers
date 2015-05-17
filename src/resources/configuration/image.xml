@@ -20,4 +20,6 @@
     <image id="Background3">resources/images/game/backgrounds/background3.png</image>
     <image id="Background4">resources/images/game/backgrounds/background4.jpg</image>
     <image id="Background5">resources/images/game/backgrounds/background5.jpg</image>
+    
+    <image id="MessageBackground">resources/images/game/message/background.png</image>
 </images>

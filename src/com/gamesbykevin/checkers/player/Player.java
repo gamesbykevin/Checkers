@@ -357,12 +357,15 @@ public abstract class Player implements Disposable
     @Override
     public void dispose()
     {
-        for (int i = 0; i < pieces.size(); i++)
+        if (pieces != null)
         {
-            pieces.set(i, null);
+            for (int i = 0; i < pieces.size(); i++)
+            {
+                pieces.set(i, null);
+            }
+
+            pieces.clear();
+            pieces = null;
         }
-        
-        pieces.clear();
-        pieces = null;
     }
 }
