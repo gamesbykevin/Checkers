@@ -172,7 +172,23 @@ public final class Manager implements IManager
         players.assignCoordinates(board);
         
         if (background == null)
-            background = new Background(engine.getResources().getGameImage(GameImages.Keys.Background));
+        {
+            //reset options list
+            options.clear();
+            
+            //add random options
+            options.add(GameImages.Keys.Background1);
+            options.add(GameImages.Keys.Background2);
+            options.add(GameImages.Keys.Background3);
+            options.add(GameImages.Keys.Background4);
+            options.add(GameImages.Keys.Background5);
+            
+            //pick random choice
+            index = engine.getRandom().nextInt(options.size());
+            
+            //assign background image
+            background = new Background(engine.getResources().getGameImage(options.get(index)));
+        }
     }
     
     public Players getPlayers()

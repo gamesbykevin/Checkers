@@ -20,7 +20,7 @@ public final class Background extends Sprite
     private Timer timer;
     
     //the delay for the background to repeat
-    private static final long DELAY = Timers.toNanoSeconds(20000L);
+    private static final long DELAY = Timers.toNanoSeconds(15000L);
     
     public Background(final Image image)
     {

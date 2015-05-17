@@ -15,5 +15,9 @@
     <image id="PiecesStone">resources/images/game/pieces/stone.png</image>
     <image id="PiecesOriginal">resources/images/game/pieces/original.png</image>
     
-    <image id="Background">resources/images/game/background.png</image>
+    <image id="Background1">resources/images/game/backgrounds/background1.jpg</image>
+    <image id="Background2">resources/images/game/backgrounds/background2.png</image>
+    <image id="Background3">resources/images/game/backgrounds/background3.png</image>
+    <image id="Background4">resources/images/game/backgrounds/background4.jpg</image>
+    <image id="Background5">resources/images/game/backgrounds/background5.jpg</image>
 </images>

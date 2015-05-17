@@ -29,14 +29,6 @@ public final class Human extends Player
         //get the mouse location
         final int x = engine.getMouse().getLocation().x;
         final int y = engine.getMouse().getLocation().y;
-            
-        if (Shared.DEBUG)
-        {
-            final int newCol = engine.getManager().getBoard().getColumn(x, y);
-            final int newRow = engine.getManager().getBoard().getRow(x, y);
-
-            System.out.println("x=" + x + ", y=" + y + " col=" + newCol + " row=" + newRow);
-        }
         
         //does the player have a piece selected
         if (hasSelection())
