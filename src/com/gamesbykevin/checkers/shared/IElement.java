@@ -13,14 +13,16 @@ import java.awt.Graphics;
 public interface IElement extends Disposable
 {
     /**
-     * Update our game element accordingly
-     * @param engine The Engine containing resources if needed
-     * @throws Exception 
+     * Update the game elements accordingly
+     * @param engine Object containing all game resources
+     * @throws Exception If there is an issue updating game elements
      */
     public void update(final Engine engine) throws Exception;
     
     /**
      * Draw our game element(s) accordingly
+     * @param graphics Object used to draw our final image
+     * @throws Exception If there is an issue rendering image
      */
     public void render(final Graphics graphics) throws Exception;
 }

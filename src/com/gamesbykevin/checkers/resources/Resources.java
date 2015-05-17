@@ -13,15 +13,22 @@ import java.awt.Rectangle;
  */
 public final class Resources implements IResources
 {
-    //root directory of all resources
+    /**
+     * Root Directory of all resources
+     */
     private static final String RESOURCE_DIR = "resources/"; 
     
+    /**
+     * The resource configuration directory
+     */
+    private static final String CONFIGURATION_DIR = "configuration/"; 
+    
     //where our configuration file that contains the resource locations
-    public static final String XML_CONFIG_GAME_AUDIO = RESOURCE_DIR + "gameAudio.xml"; 
-    public static final String XML_CONFIG_GAME_FONT  = RESOURCE_DIR + "gameFont.xml"; 
-    public static final String XML_CONFIG_GAME_IMAGE = RESOURCE_DIR + "gameImage.xml"; 
-    public static final String XML_CONFIG_GAME_TEXT  = RESOURCE_DIR + "gameText.xml"; 
-    public static final String XML_CONFIG_MENU       = RESOURCE_DIR + "menu.xml"; 
+    public static final String XML_CONFIG_GAME_AUDIO = RESOURCE_DIR + CONFIGURATION_DIR + "audio.xml"; 
+    public static final String XML_CONFIG_GAME_FONT  = RESOURCE_DIR + CONFIGURATION_DIR + "font.xml"; 
+    public static final String XML_CONFIG_GAME_IMAGE = RESOURCE_DIR + CONFIGURATION_DIR + "image.xml"; 
+    public static final String XML_CONFIG_GAME_TEXT  = RESOURCE_DIR + CONFIGURATION_DIR + "text.xml"; 
+    public static final String XML_CONFIG_MENU       = RESOURCE_DIR + CONFIGURATION_DIR + "menu.xml"; 
     
     //are we loading resources
     private boolean loading = true;

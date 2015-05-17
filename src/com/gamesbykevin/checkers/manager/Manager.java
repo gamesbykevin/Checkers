@@ -23,9 +23,6 @@ import java.util.List;
  */
 public final class Manager implements IManager
 {
-    //where gameplay occurs
-    private Rectangle window;
-    
     //the location where the board is to be drawn
     private static final int BOARD_START_X = -Board.CELL_DIMENSIONS;
     private static final int BOARD_START_Y = Board.CELL_DIMENSIONS;
@@ -36,6 +33,7 @@ public final class Manager implements IManager
     //the players in the game
     private Players players;
     
+    //the scrolling background
     private Background background;
     
     /**
@@ -47,59 +45,73 @@ public final class Manager implements IManager
     {
         //set the audio depending on menu setting
         engine.getResources().setAudioEnabled(engine.getMenu().getOptionSelectionIndex(LayerKey.Options, OptionKey.Sound) == CustomMenu.SOUND_ENABLED);
-        
-        //set the game window where game play will occur
-        setWindow(engine.getMain().getScreen());
     }
     
     @Override
     public void reset(final Engine engine) throws Exception
     {
-        //create list of optional boards
+        //create list of optional selections
         List<GameImages.Keys> options = new ArrayList<>();
 
         //reset options list
         options.clear();
 
-        //get the board selection
-        final int boardSelection = engine.getMenu().getOptionSelectionIndex(LayerKey.Options, OptionKey.Board);
-
-        //first selection is random
-        if (boardSelection == 0)
+        //check the board selection
+        switch (engine.getMenu().getOptionSelectionIndex(LayerKey.Options, OptionKey.Board))
         {
-            options.add(GameImages.Keys.BoardGlass);
-            options.add(GameImages.Keys.BoardMarble);
-            options.add(GameImages.Keys.BoardPlastic);
-            options.add(GameImages.Keys.BoardWood);
-            options.add(GameImages.Keys.BoardOriginal);
-        }
-        else if (boardSelection == 1)
-        {
-            options.add(GameImages.Keys.BoardMarble);
-        }
-        else if (boardSelection == 2)
-        {
-            options.add(GameImages.Keys.BoardGlass);
-        }
-        else if (boardSelection == 3)
-        {
-            options.add(GameImages.Keys.BoardPlastic);
-        }
-        else if (boardSelection == 4)
-        {
-            options.add(GameImages.Keys.BoardWood);
-        }
-        else
-        {
-            options.add(GameImages.Keys.BoardOriginal);
+            case 0:
+                options.add(GameImages.Keys.BoardGlass);
+                options.add(GameImages.Keys.BoardMarble);
+                options.add(GameImages.Keys.BoardPlastic);
+                options.add(GameImages.Keys.BoardWood);
+                options.add(GameImages.Keys.BoardOriginal);
+                break;
+                
+            case 1:
+                options.add(GameImages.Keys.BoardMarble);
+                break;
+                
+            case 2:
+                options.add(GameImages.Keys.BoardGlass);
+                break;
+                
+            case 3:
+                options.add(GameImages.Keys.BoardPlastic);
+                break;
+                
+            case 4:
+                options.add(GameImages.Keys.BoardWood);
+                break;
+                
+            default:
+                options.add(GameImages.Keys.BoardOriginal);
+                break;
         }
 
         //pick random choice
         int index = engine.getRandom().nextInt(options.size());
 
         //are we rendering isometric?
-        final boolean isometric = (engine.getMenu().getOptionSelectionIndex(LayerKey.Options, OptionKey.Render) != 0);
+        final boolean isometric;
         
+        //check the rendering option
+        switch (engine.getMenu().getOptionSelectionIndex(LayerKey.Options, OptionKey.Render))
+        {
+            case 0:
+                isometric = engine.getRandom().nextBoolean();
+                break;
+                
+            case 2:
+                isometric = true;
+                break;
+                
+            case 1:
+            default:
+                isometric = false;
+                break;
+        }
+        
+        //is the board isometric
         if (isometric)
         {
             //create the board
@@ -132,30 +144,31 @@ public final class Manager implements IManager
             
             //get the piece selection
             final int pieceSelection = engine.getMenu().getOptionSelectionIndex(LayerKey.Options, OptionKey.Piece);
-            
-            //first selection is random
-            if (pieceSelection == 0)
+
+            switch (pieceSelection)
             {
-                options.add(GameImages.Keys.PiecesRegular);
-                options.add(GameImages.Keys.PiecesMarble);
-                options.add(GameImages.Keys.PiecesStone);
-                options.add(GameImages.Keys.PiecesOriginal);
-            }
-            else if (pieceSelection == 1)
-            {
-                options.add(GameImages.Keys.PiecesRegular);
-            }
-            else if (pieceSelection == 2)
-            {
-                options.add(GameImages.Keys.PiecesMarble);
-            }
-            else if (pieceSelection == 3)
-            {
-                options.add(GameImages.Keys.PiecesStone);
-            }
-            else
-            {
-                options.add(GameImages.Keys.PiecesOriginal);
+                case 0:
+                    options.add(GameImages.Keys.PiecesRegular);
+                    options.add(GameImages.Keys.PiecesMarble);
+                    options.add(GameImages.Keys.PiecesStone);
+                    options.add(GameImages.Keys.PiecesOriginal);
+                    break;
+                    
+                case 1:
+                    options.add(GameImages.Keys.PiecesRegular);
+                    break;
+                    
+                case 2:
+                    options.add(GameImages.Keys.PiecesMarble);
+                    break;
+                    
+                case 3:
+                    options.add(GameImages.Keys.PiecesStone);
+                    break;
+                    
+                default:
+                    options.add(GameImages.Keys.PiecesOriginal);
+                    break;
             }
             
             //pick random choice
@@ -201,27 +214,12 @@ public final class Manager implements IManager
         return this.board;
     }
     
-    @Override
-    public Rectangle getWindow()
-    {
-        return this.window;
-    }
-    
-    @Override
-    public void setWindow(final Rectangle window)
-    {
-        this.window = new Rectangle(window);
-    }
-    
     /**
      * Free up resources
      */
     @Override
     public void dispose()
     {
-        if (window != null)
-            window = null;
-        
         if (players != null)
         {
             players.dispose();
@@ -232,6 +230,12 @@ public final class Manager implements IManager
         {
             board.dispose();
             board = null;
+        }
+        
+        if (background != null)
+        {
+            background.dispose();
+            background = null;
         }
         
         try

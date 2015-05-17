@@ -73,6 +73,7 @@
             <option>Original</option>
         </options>
         <options name="Render: " id="Render">
+            <option>Random</option>
             <option>2d</option>
             <option>3d</option>
         </options>

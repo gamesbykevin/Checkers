@@ -37,6 +37,18 @@ public final class Background extends Sprite
         super.setDimensions(imageWidth);
     }
     
+    @Override
+    public void dispose()
+    {
+        if (timer != null)
+        {
+            timer.dispose();
+            timer = null;
+        }
+
+        super.dispose();
+    }
+    
     public void update(final long time)
     {
         //update timer
