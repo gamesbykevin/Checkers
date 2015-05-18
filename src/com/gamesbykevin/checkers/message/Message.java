@@ -22,6 +22,7 @@ public final class Message extends CustomImage
     public static final String MESSAGE_PIECE_EXISTS = "Piece exists here.";
     public static final String MESSAGE_COMPLETE_JUMP = "Must complete capture.";
     public static final String MESSAGE_JUMP_REQUIRED = "Player must capture opponent.";
+    public static final String MESSAGE_INVALID_SELECTION = "Invalid Selection";
     public static final String MESSAGE_INVALID_MOVE = "Invalid Move";
     public static final String MESSAGE_PLAYER_1_TURN = "Player 1 Turn";
     public static final String MESSAGE_PLAYER_2_TURN = "Player 2 Turn";

@@ -146,7 +146,7 @@ public final class Human extends Player
                                 if (opponent.hasPiece(enemyCol, enemyRow))
                                 {
                                     //store the current piece selection
-                                    final int selection = getSelection();
+                                    //final int selection = getSelection();
                                     
                                     //remove enemy piece
                                     opponent.remove(enemyCol, enemyRow);
@@ -178,6 +178,11 @@ public final class Human extends Player
                                     engine.getManager().getMessage().setDescription2(Message.MESSAGE_INVALID_MOVE);
                                 }
                             }
+                            else
+                            {
+                                //display to user invalid move
+                                engine.getManager().getMessage().setDescription2(Message.MESSAGE_INVALID_MOVE);
+                            }
                         }
                         else
                         {
@@ -198,6 +203,16 @@ public final class Human extends Player
             {
                 //set selection
                 setSelection(getSelection(engine.getMouse().getLocation()));
+                
+                //if no selection was made
+                if (!hasSelection())
+                {
+                    engine.getManager().getMessage().setDescription2(Message.MESSAGE_INVALID_SELECTION);
+                }
+                else
+                {
+                    engine.getManager().getMessage().setDescription2(Message.MESSAGE_NONE);
+                }
                 
                 //reset mouse input
                 engine.getMouse().reset();

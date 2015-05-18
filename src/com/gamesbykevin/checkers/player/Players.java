@@ -208,11 +208,19 @@ public final class Players extends Sprite implements IElement
         }
     }
     
+    /**
+     * Is it player 1's turn?
+     * @return true=yes, false=no
+     */
     private boolean isPlayer1Turn()
     {
         return this.player1turn;
     }
     
+    /**
+     * Set the appropriate players turn.<br>
+     * @param player1turn true = player 1's turn, false = player 2's turn
+     */
     private void setPlayer1Turn(final boolean player1turn)
     {
         this.player1turn = player1turn;

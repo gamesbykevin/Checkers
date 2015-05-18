@@ -329,71 +329,141 @@ public final class Engine implements KeyListener, MouseMotionListener, MouseList
     @Override
     public void keyReleased(KeyEvent e)
     {
-        if (getKeyboard() != null)
-            getKeyboard().addKeyReleased(e.getKeyCode());
+        try
+        {
+            if (getKeyboard() != null)
+                getKeyboard().addKeyReleased(e.getKeyCode());
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
     
     @Override
     public void keyPressed(KeyEvent e)
     {
-        if (getKeyboard() != null)
-            getKeyboard().addKeyPressed(e.getKeyCode());
+        try
+        {
+            if (getKeyboard() != null)
+                getKeyboard().addKeyPressed(e.getKeyCode());
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
     
     @Override
     public void keyTyped(KeyEvent e)
     {
-        //do nothing here for now
-        //keyboard.addKeyTyped(e.getKeyChar());
+        try
+        {
+            //do nothing here for now
+            //keyboard.addKeyTyped(e.getKeyChar());
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
     
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        if (getMouse() != null)
-            getMouse().setMouseClicked(e);
+        try
+        {
+            if (getMouse() != null)
+                getMouse().setMouseClicked(e);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
     
     @Override
     public void mousePressed(MouseEvent e)
     {
-        if (getMouse() != null)
-            getMouse().setMousePressed(e);
+        try
+        {
+            if (getMouse() != null)
+                getMouse().setMousePressed(e);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
     
     @Override
     public void mouseReleased(MouseEvent e)
     {
-        if (getMouse() != null)
-            getMouse().setMouseReleased(e);
+        try
+        {
+            if (getMouse() != null)
+                getMouse().setMouseReleased(e);
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
     
     @Override
     public void mouseEntered(MouseEvent e)
     {
-        if (getMouse() != null)
-            getMouse().setMouseEntered(e.getPoint());
+        try
+        {
+            if (getMouse() != null)
+                getMouse().setMouseEntered(e.getPoint());
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
     
     @Override
     public void mouseExited(MouseEvent e)
     {
-        if (getMouse() != null)
-            getMouse().setMouseExited(e.getPoint());
+        try
+        {
+            if (getMouse() != null)
+                getMouse().setMouseExited(e.getPoint());
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
     
     @Override
     public void mouseMoved(MouseEvent e)
     {
-        if (getMouse() != null)
-            getMouse().setMouseMoved(e.getPoint());
+        try
+        {
+            if (getMouse() != null)
+                getMouse().setMouseMoved(e.getPoint());
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
     
     @Override
     public void mouseDragged(MouseEvent e)
     {
-        if (getMouse() != null)
-            getMouse().setMouseDragged(e.getPoint());
+        try
+        {
+            if (getMouse() != null)
+                getMouse().setMouseDragged(e.getPoint());
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
     }
     
     public Mouse getMouse()
