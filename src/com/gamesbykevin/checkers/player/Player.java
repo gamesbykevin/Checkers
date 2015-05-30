@@ -1,8 +1,9 @@
 package com.gamesbykevin.checkers.player;
 
-import com.gamesbykevin.checkers.board.Board;
+import com.gamesbykevin.framework.base.Cell;
 import com.gamesbykevin.framework.resources.Disposable;
 
+import com.gamesbykevin.checkers.board.Board;
 import com.gamesbykevin.checkers.engine.Engine;
 import com.gamesbykevin.checkers.piece.Checker;
 import com.gamesbykevin.checkers.player.Players.PieceKey;
@@ -118,6 +119,19 @@ public abstract class Player implements Disposable
     }
     
     /**
+     * Get the checker that is currently selected
+     * @return The checker we currently have selected, if none null is returned
+     */
+    public Checker getCurrentSelection()
+    {
+        //if we have no selection return null
+        if (!hasSelection())
+            return null;
+        
+        return getPiece(getSelection());
+    }
+    
+    /**
      * Set the piece selection
      * @param selection The index of the piece you want to interact with
      */
@@ -199,22 +213,50 @@ public abstract class Player implements Disposable
     }
     
     /**
-     * Does this player have a jump to capture the opponent piece?
+     * Does this player have a jump to capture the opponent piece?<br>
      * @param opponent The opponent we are attacking
-     * @return true if a jump move is available to capture an opponent piece, false otherwise
+     * @return true if a jump move is available to capture at least 1 opponent piece, false otherwise
      */
     public boolean hasCapture(final Player opponent)
     {
+        return (getCaptureCount(opponent) > Checker.NO_CAPTURES);
+    }
+    
+    /**
+     * Count the number of captures we have.<br>
+     * Each capture will be for each checker that can at least jump 1 opponent checker.
+     * @param opponent The opponent we are attacking
+     * @return The number of checkers that can capture ate least 1 opponent checker
+     */
+    public int getCaptureCount(final Player opponent)
+    {
+        //keep track of the number of captures
+        int count = 0;
+        
         //check each piece to see if we have a jump
         for (int i = 0; i < getPieces().size(); i++)
         {
-            //if the current piece has a capture, return true
-            if (getPiece(i).hasCapture(opponent, this))
-                return true;
+            //add the number of captures this piece has to our total
+            count += getPiece(i).getCaptureCount(opponent, this);
         }
         
         //no capture found, return false
-        return false;
+        return count;
+    }
+    
+    /**
+     * Assign the location for the current selected piece.<br>
+     * Then assign the appropriate x,y coordinates.<br>
+     * We will also check if the piece qualifies to become a king<br>
+     * Finally reset the current piece selection<br>
+     * 
+     * @param board The game board, used to get the x,y coordinates
+     * @param destination The place we want to place the piece
+     * @throws Exception if the column or row is out of range of the board
+     */
+    protected void placeSelection(final Board board, final Cell destination) throws Exception
+    {
+        placeSelection(board, (int)destination.getCol(), (int)destination.getRow());
     }
     
     /**
@@ -231,7 +273,7 @@ public abstract class Player implements Disposable
     protected void placeSelection(final Board board, final int col, final int row) throws Exception
     {
         //the current selected piece
-        Checker piece = getPiece(getSelection());
+        Checker piece = getCurrentSelection();
 
         //assign the location
         piece.setCol(col);
@@ -255,6 +297,17 @@ public abstract class Player implements Disposable
         
         //reset selection
         setSelection(NO_SELECTION);
+    }
+    
+    /**
+     * Is there a piece here at this location?<br>
+     * @param col Column
+     * @param row Row
+     * @return true if there is a piece at this location, false otherwise
+     */
+    public boolean hasPiece(final double col, final double row)
+    {
+        return hasPiece((int)col, (int)row);
     }
     
     /**
@@ -321,7 +374,7 @@ public abstract class Player implements Disposable
     }
     
     /**
-     * Are all of the player's checkers trapped?<br>
+     * Are all of the player's checkers trapped or are there 0 moves available?<br>
      * @param opponent The opponent we re playing
      * @return true if the player has at least 1 piece that can move, false otherwise
      */
@@ -349,7 +402,7 @@ public abstract class Player implements Disposable
     /**
      * Each player will need a way to update their pieces
      * @param engine Object containing game elements
-     * @return true if the player has completed their turn
+     * @return true if the player has completed their turn, false otherwise
      * @throws Exception 
      */
     public abstract boolean update(final Engine engine) throws Exception;

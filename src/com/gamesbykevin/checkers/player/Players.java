@@ -6,6 +6,7 @@ import com.gamesbykevin.checkers.board.Board;
 import com.gamesbykevin.checkers.engine.Engine;
 import com.gamesbykevin.checkers.message.Message;
 import com.gamesbykevin.checkers.piece.Checker;
+import com.gamesbykevin.checkers.resources.GameAudio;
 import com.gamesbykevin.checkers.shared.IElement;
 
 import java.awt.event.KeyEvent;
@@ -32,6 +33,16 @@ public final class Players extends Sprite implements IElement
      */
     private static final int KEY_RESET = KeyEvent.VK_R;
     
+    /**
+     * Player modes
+     * 1) human vs. cpu
+     * 2) cpu vs. cpu
+     * 3) human vs. human
+     */
+    public static final int HUMAN_CPU = 0;
+    public static final int CPU_CPU = 1;
+    public static final int HUMAN_HUMAN = 2;
+    
     public enum PieceKey
     {
         RegularPlayer1(2,1),
@@ -50,7 +61,7 @@ public final class Players extends Sprite implements IElement
         }
     }
     
-    public Players(final Image image, final boolean random) throws Exception
+    public Players(final Image image, final boolean random, final int playerModeIndex) throws Exception
     {
         //assign image
         super.setImage(image);
@@ -58,20 +69,37 @@ public final class Players extends Sprite implements IElement
         //create spritesheet
         super.createSpriteSheet();
         
-        //player 1 can have a different colored set of checkers
-        if (random)
-        {
-            //player 1 will attack north
-            this.player1 = new Human(true, PieceKey.RegularPlayer1, PieceKey.KingPlayer1);
-        }
-        else
-        {
-            //player 1 will attack north
-            this.player1 = new Human(true, PieceKey.RegularPlayer1Other, PieceKey.KingPlayer1Other);
-        }
+        //pick checker animations for player 1
+        PieceKey regular = (random) ? PieceKey.RegularPlayer1 : PieceKey.RegularPlayer1Other;
+        PieceKey king = (random) ? PieceKey.KingPlayer1 : PieceKey.KingPlayer1Other;
         
-        //player 2 will attack south
-        this.player2 = new Human(false, PieceKey.RegularPlayer2, PieceKey.KingPlayer2);
+        switch (playerModeIndex)
+        {
+            case HUMAN_CPU:
+            default:
+                //player 1 will attack north
+                this.player1 = new Human(true, regular, king);
+                
+                //player 2 will attack south
+                this.player2 = new Cpu(false, PieceKey.RegularPlayer2, PieceKey.KingPlayer2);
+                break;
+                
+            case CPU_CPU:
+                //player 1 will attack north
+                this.player1 = new Cpu(true, regular, king);
+
+                //player 2 will attack south
+                this.player2 = new Cpu(false, PieceKey.RegularPlayer2, PieceKey.KingPlayer2);
+                break;
+                
+            case HUMAN_HUMAN:
+                //player 1 will attack north
+                this.player1 = new Human(true, regular, king);
+                
+                //player 2 will attack south
+                this.player2 = new Human(false, PieceKey.RegularPlayer2, PieceKey.KingPlayer2);
+                break;
+        }
         
         //add the animation for each piece
         for (PieceKey key : PieceKey.values())
@@ -244,6 +272,12 @@ public final class Players extends Sprite implements IElement
                     //also reset status message
                     engine.getManager().getMessage().setDescription1(Message.MESSAGE_PLAYER_1_TURN);
                     engine.getManager().getMessage().setDescription2(Message.MESSAGE_BEGIN);
+                    
+                    //stop all existing sound
+                    engine.getResources().stopAllSound();
+                    
+                    //re-start playing music
+                    engine.getResources().playRandomMusic(engine.getRandom());
                 }
             }
             
@@ -295,6 +329,12 @@ public final class Players extends Sprite implements IElement
                 //set message
                 engine.getManager().getMessage().setDescription1(Message.MESSAGE_PLAYER_2_WINS);
                 engine.getManager().getMessage().setDescription2(Message.MESSAGE_RESET);
+                
+                //stop any existing sound
+                engine.getResources().stopAllSound();
+                
+                //play lose sound effect
+                engine.getResources().playGameAudio(GameAudio.Keys.Lose);
             }
             else if (getPlayer2().isTrapped(getPlayer1()))
             {
@@ -304,6 +344,12 @@ public final class Players extends Sprite implements IElement
                 //set message
                 engine.getManager().getMessage().setDescription1(Message.MESSAGE_PLAYER_1_WINS);
                 engine.getManager().getMessage().setDescription2(Message.MESSAGE_RESET);
+                
+                //stop any existing sound
+                engine.getResources().stopAllSound();
+                
+                //play win sound effect
+                engine.getResources().playGameAudio(GameAudio.Keys.Win);
             }
         }
         

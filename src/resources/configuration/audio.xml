@@ -3,4 +3,22 @@
     <!--
     <sound id="Fill">resources/audio/game/fill.wav</sound>
     -->
+    <sound id="Capture1">resources/audio/game/capture1.wav</sound>
+    <sound id="Capture2">resources/audio/game/capture2.wav</sound>
+    
+    <sound id="Place1">resources/audio/game/place1.wav</sound>
+    <sound id="Place2">resources/audio/game/place2.wav</sound>
+    
+    <sound id="Select1">resources/audio/game/select1.wav</sound>
+    <sound id="Select2">resources/audio/game/select2.wav</sound>
+    
+    <sound id="Invalid">resources/audio/game/invalid.wav</sound>
+    
+    <sound id="Lose">resources/audio/game/lose.mp3</sound>
+    <sound id="Win">resources/audio/game/win.mp3</sound>
+    
+    <sound id="Music1">resources/audio/game/music1.mp3</sound>
+    <sound id="Music2">resources/audio/game/music2.mp3</sound>
+    <sound id="Music3">resources/audio/game/music3.mp3</sound>
+    <sound id="Music4">resources/audio/game/music4.mp3</sound>
 </sounds>

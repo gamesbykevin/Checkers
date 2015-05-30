@@ -6,12 +6,15 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * This class will load all resources in the collection and provide a way to access them
  * @author GOD
  */
-public final class Resources implements IResources
+public class Resources implements IResources
 {
     /**
      * Root Directory of all resources
@@ -39,8 +42,21 @@ public final class Resources implements IResources
     private GameFont fonts;
     private GameText textFiles;
     
+    //our music list
+    private List<GameAudio.Keys> musicList;
+    
     public Resources() throws Exception
     {
+        //create a new music list
+        this.musicList = new ArrayList<>();
+        
+        //add optional music to the list
+        this.musicList.add(GameAudio.Keys.Music1);
+        this.musicList.add(GameAudio.Keys.Music2);
+        this.musicList.add(GameAudio.Keys.Music3);
+        this.musicList.add(GameAudio.Keys.Music4);
+        
+        
         //object to contain audio resources
         this.audio = new GameAudio();
         
@@ -199,6 +215,16 @@ public final class Resources implements IResources
     }
     
     /**
+     * Play a random song, w/infinite loop
+     * @param random Object used to make random decisions
+     */
+    public void playRandomMusic(final Random random)
+    {
+        //pick a random song to play, and loop
+        playGameAudio(musicList.get(random.nextInt(musicList.size())), true);
+    }
+    
+    /**
      * Get the game font
      * @param key The unique key of the object we want
      * @return The specified game font
@@ -216,6 +242,12 @@ public final class Resources implements IResources
     @Override
     public void dispose()
     {
+        if (musicList != null)
+        {
+            musicList.clear();
+            musicList = null;
+        }
+        
         if (audio != null)
         {
             audio.dispose();

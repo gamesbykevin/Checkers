@@ -13,22 +13,22 @@
         <force>true</force>
         <pause>false</pause>
         <duration>2000</duration>
-        <image>resources/images/menu/untitled.png</image>
+        <image>resources/images/menu/checkers.jpg</image>
     </layer>
     <layer id="Credits" next="MainTitle">
         <transition>SCROLL_VERTICAL_NORTH</transition>
         <force>true</force>
         <pause>false</pause>
         <duration>5000</duration>
-        <image>resources/images/menu/untitled.png</image>
+        <image>resources/images/menu/credit.jpg</image>
     </layer>
     <layer id="MainTitle">
-        <transition>SCROLL_HORIZONTAL_WEST_REPEAT</transition>
+        <transition>NONE</transition>
         <force>false</force>
         <pause>true</pause>
         <duration>10000</duration>
-        <image>resources/images/menu/untitled.png</image>
-        <optionContainerRatio>0.75</optionContainerRatio>
+        <image>resources/images/menu/background.jpg</image>
+        <optionContainerRatio>0.5</optionContainerRatio>
         <optionBorderThickness>5</optionBorderThickness>
         <title>Checkers</title>
         <backgroundMusicLocation></backgroundMusicLocation>
@@ -44,15 +44,15 @@
         <force>false</force>
         <pause>true</pause>
         <duration></duration>
-        <image>resources/images/menu/untitled.png</image>
+        <image>resources/images/menu/credit.jpg</image>
     </layer>
     <layer id="Options">
-        <transition>SCROLL_HORIZONTAL_WEST_REPEAT</transition>
+        <transition>NONE</transition>
         <force>false</force>
         <pause>true</pause>
         <duration>10000</duration>
-        <image>resources/images/menu/untitled.png</image>
-        <optionContainerRatio>0.75</optionContainerRatio>
+        <image>resources/images/menu/background.jpg</image>
+        <optionContainerRatio>0.5</optionContainerRatio>
         <optionBorderThickness>5</optionBorderThickness>
         <title>Options</title>
         <backgroundMusicLocation></backgroundMusicLocation>
@@ -77,6 +77,11 @@
             <option>2d</option>
             <option>3d</option>
         </options>
+        <options name="Players: " id="Players">
+            <option>Human vs. Cpu</option>
+            <option>Cpu vs. Cpu</option>
+            <option>Human vs. Human</option>
+        </options>
         <options name="All Sound: " id="Sound">
             <option>On</option>
             <option>Off</option>
@@ -92,14 +97,14 @@
         <force>false</force>
         <pause>true</pause>
         <duration></duration>
-        <image>resources/images/menu/untitled.png</image>
+        <image>resources/images/menu/controls.jpg</image>
     </layer>
     <layer id="Instructions1" next="MainTitle">
         <transition>NONE</transition>
         <force>false</force>
         <pause>true</pause>
         <duration></duration>
-        <image>resources/images/menu/untitled.png</image>
+        <image>resources/images/menu/instructions.jpg</image>
     </layer>
     <layer id="GameStart">
         <!-- THIS LAYER IS INTENTIONALLY LEFT BLANK, THIS IS WHERE MAIN GAMEPLAY WILL START -->
@@ -110,7 +115,7 @@
         <pause>true</pause>
         <duration></duration>
         <image></image>
-        <optionContainerRatio>0.75</optionContainerRatio>
+        <optionContainerRatio>0.5</optionContainerRatio>
         <optionBorderThickness>5</optionBorderThickness>
         <title>Options</title>
         <backgroundMusicLocation></backgroundMusicLocation>
@@ -136,7 +141,7 @@
         <pause>true</pause>
         <duration></duration>
         <image></image>
-        <optionContainerRatio>0.75</optionContainerRatio>
+        <optionContainerRatio>0.5</optionContainerRatio>
         <optionBorderThickness>5</optionBorderThickness>
         <title>Reset?</title>
         <options name="Yes" next="CreateNewGame" id="CreateNewGame"></options>
@@ -150,7 +155,7 @@
         <pause>true</pause>
         <duration></duration>
         <image></image>
-        <optionContainerRatio>0.75</optionContainerRatio>
+        <optionContainerRatio>0.5</optionContainerRatio>
         <optionBorderThickness>5</optionBorderThickness>
         <title>Leave?</title>
         <options name="Yes" next="ExitGameConfirmed" id="MainTitle"></options>

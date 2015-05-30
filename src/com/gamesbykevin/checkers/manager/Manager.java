@@ -196,7 +196,11 @@ public final class Manager implements IManager
             index = engine.getRandom().nextInt(options.size());
             
             //create the players and assign the pieces image
-            players = new Players(engine.getResources().getGameImage(options.get(index)), engine.getRandom().nextBoolean());
+            players = new Players(
+                engine.getResources().getGameImage(options.get(index)), 
+                engine.getRandom().nextBoolean(), 
+                engine.getMenu().getOptionSelectionIndex(LayerKey.Options, OptionKey.Players)
+            );
         }
         
         //reset the player's pieces
@@ -220,6 +224,12 @@ public final class Manager implements IManager
             //assign background image
             background = new Background(engine.getResources().getGameImage(options.get(index)));
         }
+        
+        //stop any sound playing
+        engine.getResources().stopAllSound();
+        
+        //start playing music
+        engine.getResources().playRandomMusic(engine.getRandom());
     }
     
     public Message getMessage()

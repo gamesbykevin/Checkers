@@ -67,7 +67,18 @@ public abstract class Board extends CustomImage
      * @param row Row
      * @return true if the location is within the playable game board, false otherwise
      */
-    public static boolean hasBounds(final int column, final int row)
+    public static boolean hasBoundary(final double column, final double row)
+    {
+        return hasBoundary((int)column, (int)row);
+    }
+    
+    /**
+     * Is the column, row within the playable board boundary?<br>
+     * @param column Column
+     * @param row Row
+     * @return true if the location is within the playable game board, false otherwise
+     */
+    public static boolean hasBoundary(final int column, final int row)
     {
         //make sure within column
         if (column >= COLUMNS_MIN && column <= COLUMNS_MAX)
