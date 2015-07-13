@@ -40,12 +40,6 @@ public final class Background extends Sprite
     @Override
     public void dispose()
     {
-        if (timer != null)
-        {
-            timer.dispose();
-            timer = null;
-        }
-
         super.dispose();
     }
     

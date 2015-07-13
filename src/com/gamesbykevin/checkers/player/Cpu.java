@@ -62,7 +62,6 @@ public final class Cpu extends Player implements Disposable
         this.options.clear();
         this.options = null;
         
-        this.timer.dispose();
         this.timer = null;
     }
     
